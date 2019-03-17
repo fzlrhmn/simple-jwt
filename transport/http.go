@@ -7,7 +7,9 @@ import (
 
 	"github.com/fzlrhmn/simple-jwt/endpoint"
 	"github.com/fzlrhmn/simple-jwt/util/ctxhelper"
+	e "github.com/fzlrhmn/simple-jwt/util/error"
 	transport "github.com/go-kit/kit/transport/http"
+	validator "github.com/go-playground/validator"
 	"github.com/go-zoo/bone"
 	"github.com/google/uuid"
 	"github.com/hooqtv/glogger/adapter/newrelic"
@@ -15,7 +17,8 @@ import (
 )
 
 var (
-	json = jsoniter.ConfigCompatibleWithStandardLibrary
+	json     = jsoniter.ConfigCompatibleWithStandardLibrary
+	validate *validator.Validate
 )
 
 type (
@@ -53,6 +56,13 @@ func MakeHTTPHandler(endpoints endpoint.Set) http.Handler {
 		serverOpts...,
 	))
 
+	r.Post("/1.0/user", transport.NewServer(
+		endpoints.CreateUserEndpoint,
+		decodeCreateUserRequest,
+		encodeCreateResponse,
+		serverOpts...,
+	))
+
 	return r
 }
 
@@ -80,4 +90,18 @@ func decorateMeta(reqID string) meta {
 		"now":       time.Now().UnixNano(),
 		"requestId": reqID,
 	}
+}
+
+func decodeAndValidate(r *http.Request, model interface{}) error {
+	if err := json.NewDecoder(r.Body).Decode(&model); err != nil {
+		return e.RequestBodyUnparseable()
+	}
+	defer r.Body.Close()
+
+	validate = validator.New()
+	if err := validate.Struct(model); err != nil {
+		return e.RequestBodyFailsValidation(err)
+	}
+
+	return nil
 }
