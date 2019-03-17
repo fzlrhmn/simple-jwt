@@ -1,0 +1,14 @@
+vendor
+debug
+debug.test
+surapati
+dist
+/build
+.vscode
+node_modules
+result.json
+result.json.html
+.DS_Store
+*.iml
+.idea
+TODO
