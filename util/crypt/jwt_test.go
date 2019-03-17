@@ -9,7 +9,7 @@ import (
 
 	fake "github.com/brianvoe/gofakeit"
 	jwt "github.com/dgrijalva/jwt-go"
-	stringUtil "github.com/hooqtv/stairway/util/string"
+	stringUtil "github.com/fzlrhmn/simple-jwt/util/string"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )

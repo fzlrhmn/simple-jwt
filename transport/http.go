@@ -5,9 +5,13 @@ import (
 	"net/http"
 	"time"
 
+	"golang.org/x/time/rate"
+
 	"github.com/fzlrhmn/simple-jwt/endpoint"
 	"github.com/fzlrhmn/simple-jwt/util/ctxhelper"
 	e "github.com/fzlrhmn/simple-jwt/util/error"
+	kitendpoint "github.com/go-kit/kit/endpoint"
+	"github.com/go-kit/kit/ratelimit"
 	transport "github.com/go-kit/kit/transport/http"
 	validator "github.com/go-playground/validator"
 	"github.com/go-zoo/bone"
@@ -32,6 +36,7 @@ type (
 // MakeHTTPHandler returns an HTTP handler for gokit endpoints
 func MakeHTTPHandler(endpoints endpoint.Set) http.Handler {
 	r := bone.New()
+	limit := rate.NewLimiter(rate.Every(time.Minute), 1)
 
 	serverRequestOpts := []transport.RequestFunc{
 		ctxhelper.PopulateFromHTTPRequest,
@@ -56,15 +61,21 @@ func MakeHTTPHandler(endpoints endpoint.Set) http.Handler {
 		serverOpts...,
 	))
 
+	postCreateUserEndpoint := kitendpoint.Chain(
+		ratelimit.NewErroringLimiter(limit),
+	)(endpoints.CreateUserEndpoint)
 	r.Post("/1.0/user", transport.NewServer(
-		endpoints.CreateUserEndpoint,
+		postCreateUserEndpoint,
 		decodeCreateUserRequest,
 		encodeCreateResponse,
 		serverOpts...,
 	))
 
+	postSigninUserEndpoint := kitendpoint.Chain(
+		ratelimit.NewErroringLimiter(limit),
+	)(endpoints.SigninUserEndpoint)
 	r.Post("/1.0/user/signin", transport.NewServer(
-		endpoints.SigninUserEndpoint,
+		postSigninUserEndpoint,
 		decodeSigninUserRequest,
 		encodeSigninUserResponse,
 		serverOpts...,

@@ -21,6 +21,14 @@
   version = "v1.1.1"
 
 [[projects]]
+  digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
   digest = "1:abeb38ade3f32a92943e5be54f55ed6d6e3b6602761d74b4aab4c9dd45c18abd"
   name = "github.com/fsnotify/fsnotify"
   packages = ["."]
@@ -37,11 +45,12 @@
   version = "v1.0.1"
 
 [[projects]]
-  digest = "1:613a6897b04e222f3915eb7a88467ced43aeacd3c5f873b833a9fd3daae76089"
+  digest = "1:b91fc68354b418ac1c545cf839d5a620b0706e474f1891d6923a0ba05224d74d"
   name = "github.com/go-kit/kit"
   packages = [
     "endpoint",
     "log",
+    "ratelimit",
     "transport/http",
   ]
   pruneopts = "UT"
@@ -362,6 +371,14 @@
   version = "v0.3.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:9fdc2b55e8e0fafe4b41884091e51e77344f7dc511c5acedcfd98200003bff90"
+  name = "golang.org/x/time"
+  packages = ["rate"]
+  pruneopts = "UT"
+  revision = "9d24e82272b4f38b78bc8cff74fa936d31ccd8ef"
+
+[[projects]]
   digest = "1:4d2e5a73dc1500038e504a8d78b986630e3626dc027bc030ba5c75da257cdb96"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
@@ -382,8 +399,10 @@
   analyzer-version = 1
   input-imports = [
     "github.com/brianvoe/gofakeit",
+    "github.com/dgrijalva/jwt-go",
     "github.com/go-errors/errors",
     "github.com/go-kit/kit/endpoint",
+    "github.com/go-kit/kit/ratelimit",
     "github.com/go-kit/kit/transport/http",
     "github.com/go-pg/pg",
     "github.com/go-playground/validator",
@@ -396,6 +415,7 @@
     "go.uber.org/zap",
     "go.uber.org/zap/zapcore",
     "golang.org/x/crypto/bcrypt",
+    "golang.org/x/time/rate",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
