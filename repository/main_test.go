@@ -16,6 +16,7 @@ var repo PostgresService
 
 func TestMain(m *testing.M) {
 	loadConfig()
+	seedGofakeit()
 
 	postgre.Initialize()
 	repo = NewPostgresRepository()

@@ -63,6 +63,13 @@ func MakeHTTPHandler(endpoints endpoint.Set) http.Handler {
 		serverOpts...,
 	))
 
+	r.Post("/1.0/user/signin", transport.NewServer(
+		endpoints.SigninUserEndpoint,
+		decodeSigninUserRequest,
+		encodeSigninUserResponse,
+		serverOpts...,
+	))
+
 	return r
 }
 

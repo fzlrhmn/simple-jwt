@@ -9,6 +9,7 @@ import (
 type Set struct {
 	GetHealthCheckEndpoint endpoint.Endpoint
 	CreateUserEndpoint     endpoint.Endpoint
+	SigninUserEndpoint     endpoint.Endpoint
 }
 
 // New is for create instance of endpoint
@@ -16,5 +17,6 @@ func New(svc service.UserService) Set {
 	return Set{
 		GetHealthCheckEndpoint: MakeHealthCheckEndpoint(svc),
 		CreateUserEndpoint:     MakeCreateUserEndpoint(svc),
+		SigninUserEndpoint:     MakeSigninUserEndpoint(svc),
 	}
 }

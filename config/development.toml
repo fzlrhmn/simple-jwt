@@ -1,6 +1,8 @@
 [app]
 port = 8796
 env = "development"
+secret = "MbeYEuMWgrcLt4KW7BujdwCb9cmBk7CV"
+expiry = "336h"
 
 [log]
 level = "debug"

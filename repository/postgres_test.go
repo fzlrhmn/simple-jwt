@@ -22,3 +22,20 @@ func TestCreateUser(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, u)
 }
+
+func TestCreateAndGetUser(t *testing.T) {
+	ctx := context.Background()
+	user := User{
+		ID:       uuid.New().String(),
+		Username: fake.Username(),
+		Password: fake.Password(true, true, true, false, false, 10),
+	}
+
+	u, err := repo.CreateUser(ctx, user)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, u)
+
+	s, err := repo.GetUserByUsername(ctx, u.Username)
+	assert.NoError(t, err)
+	assert.Equal(t, user.Username, s.Username)
+}

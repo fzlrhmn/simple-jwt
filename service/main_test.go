@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
+	fake "github.com/brianvoe/gofakeit"
 	"github.com/fzlrhmn/simple-jwt/util/connection/postgres"
 	"github.com/spf13/viper"
 )
@@ -15,6 +17,7 @@ var svc UserService
 func TestMain(m *testing.M) {
 	loadConfig()
 	initService()
+	seedGofakeit()
 	postgres.Initialize()
 	code := m.Run()
 	os.Exit(code)
@@ -41,4 +44,8 @@ func loadConfig() {
 
 func initService() {
 	svc = New()
+}
+
+func seedGofakeit() {
+	fake.Seed(time.Now().UnixNano())
 }

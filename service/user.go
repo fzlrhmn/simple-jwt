@@ -12,6 +12,7 @@ type (
 	UserService interface {
 		HealthCheck() bool
 		CreateUser(context.Context, User) (*User, error)
+		SigninUser(context.Context, User) (*User, error)
 	}
 
 	// UserSvc is representation of User service instance
@@ -23,7 +24,7 @@ type (
 	User struct {
 		Username string
 		Password string
-		JWT      string
+		Token    string
 	}
 )
 
